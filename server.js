@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(__dirname + '/public'));
 
-
+// Passes app to each respective route script
 require("./routes/apiRoutes")(app)
 require("./routes/htmlRoutes")(app)
 
