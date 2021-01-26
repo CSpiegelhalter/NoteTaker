@@ -1,8 +1,6 @@
 
 const fs = require("fs")
 
-let usedIds = []
-
 module.exports = function(app) {
 
     app.get('/api/notes', function(req, res) {
@@ -13,8 +11,8 @@ module.exports = function(app) {
             }
             else {
                 read = JSON.parse(data)
-                res.json(read)
-                return 
+                
+                return res.json(read)
             }
         })
     });
@@ -50,7 +48,7 @@ module.exports = function(app) {
             });
         }});
         res.json(true)
-        return obj
+        return 
     });
 
     app.delete('/api/notes/:id', function(req, res) {
@@ -61,8 +59,13 @@ module.exports = function(app) {
             }
             else {
                 objArray = JSON.parse(data)
-                objArray = objArray.filter(({ id }) => id !== req.params.id);
+                const id = req.params.id;
+
+                const projectIndex = objArray.findIndex(p => p.id == id);
+
+                objArray.splice(projectIndex, 1);
                 res.json(objArray)
+
                 json = JSON.stringify(objArray); //convert it back to json
                 fs.writeFile('./db/db.json', json, 'utf8', function(err) {
                     if (err) {
